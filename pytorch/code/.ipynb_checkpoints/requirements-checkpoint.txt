@@ -1,4 +1,0 @@
-openai-whisper
-ffmpeg-python
-torchaudio
-nvgpu

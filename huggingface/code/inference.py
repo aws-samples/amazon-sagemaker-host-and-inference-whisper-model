@@ -36,35 +36,9 @@ def transform_fn(model, request_body, request_content_type, response_content_typ
     
     start_time = time.time()
     
-    if sys.getsizeof(request_body) >= 1000: # video or audio loaded 
-        file = io.BytesIO(request_body)
-        tfile = tempfile.NamedTemporaryFile(delete=False)
-        tfile.write(file.read())
-        
-
-    else: # json path loaded 
-        input_data = json.loads(request_body)
-        input_path = input_data['s3_location']
-        logging.info("Check out the input_path: %s", input_path)
-
-        input_bucket_name = input_path.split('/')[2]
-        input_file_name = ('/').join(input_path.split('/')[3:])
-
-        s3_client = boto3.client('s3')
-
-        # Download the file
-        logging.info("Download video file from S3 bucket: %s", input_bucket_name)
-
-        # Create a temporary file. 
-        # * File has to be saved as temp file. cannot write into the container
-        tfile = tempfile.NamedTemporaryFile(delete=False)
-
-        # Download the video file from S3
-        s3_client.download_file(input_bucket_name, input_file_name, tfile.name)
-
-        # Close the temporary file to ensure it is accessible for reading
-        tfile.close()
-    
+    file = io.BytesIO(request_body)
+    tfile = tempfile.NamedTemporaryFile(delete=False)
+    tfile.write(file.read())
 
     logging.info("Start to generate the transcription ...")
     result = model(tfile.name, batch_size=8)["text"]
@@ -75,7 +49,5 @@ def transform_fn(model, request_body, request_content_type, response_content_typ
     end_time = time.time()
     elapsed_time = end_time - start_time
     logging.info("The time for running this program is %s", elapsed_time)
-
     
     return json.dumps(result), response_content_type   
-    
