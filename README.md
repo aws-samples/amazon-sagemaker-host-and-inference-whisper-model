@@ -17,7 +17,7 @@ In this post, we embark on an exploration of SageMaker's capabilities, specifica
  
 
 This notebook is tested in SageMaker Studio. Below shows detailed setup.   
-- SageMaker Studio: **ml.m5.large** instance with **Data Science 3.0** kernel.
+- SageMaker Studio: **ml.m5.large** instance with **Data Science 2.0** kernel.
 
 ## Tested Software Versions:
 
@@ -26,6 +26,7 @@ This notebook is tested in SageMaker Studio. Below shows detailed setup.
 * openai-whisper : 20230918
 * torchaudio : 2.1.0
 * accelerate : 0.23.0
+* datasets : 2.16.1
 * librosa : 0.10.1
 * soundfile : 0.12.1
 
